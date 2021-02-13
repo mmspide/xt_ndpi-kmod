@@ -48,7 +48,7 @@ Compiling from source
 
 Compile the kernel and iptable modules inside a CentOS 7: ::
 
-  yum -y install kernel-devel gcc iptables-devel libpcap-devel autoconf automake libtool
+  yum -y install kernel-devel gcc iptables-devel libpcap-devel autoconf automake libtool json-c-devel
   wget https://github.com/vel21ripn/nDPI/archive/netfilter.tar.gz
   tar xvzf netfilter.tar.gz
   cd nDPI-netfilter/
@@ -58,6 +58,23 @@ Compile the kernel and iptable modules inside a CentOS 7: ::
   MODULES_DIR=/lib/modules/3.10.0-514.el7.x86_64 KERNEL_DIR=$MODULES_DIR/build/ NDPI_PATH=$PWD/nDPI-1.7.20151023 make
   MODULES_DIR=/lib/modules/3.10.0-514.el7.x86_64 KERNEL_DIR=$MODULES_DIR/build/ make install
   MODULES_DIR=/lib/modules/3.10.0-514.el7.x86_64 KERNEL_DIR=$MODULES_DIR/build/ make modules_install
+  
+  
+  export PATH=$INSTALL_DIR/bin:$PATH
+export TARGETMACH=arm-none-linux-gnueabihf
+export BUILDMACH=i686-pc-linux-gnu
+export CROSS=arm-linux-gnueabihf
+export CC=${CROSS}-gcc
+export LD=${CROSS}-ld
+export AS=${CROSS}-as
+export AR=${CROSS}-ar
+
+
+./autogen.sh --host=armv7 --enable-debug-messages
+
+sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
+
+MODULES_DIR=/opt/bpi/SD/BPI-ROOT/lib/modules/4.14.193-atrakpardaz-zoobin KERNEL_DIR=/opt/bpi/BPI-R2-4.14-CI-BUILD-20200807_123125-1f089fa9e NDPI_PATH=$PWD/nDPI-1.7.20151023 make
 
 Links
 -----
