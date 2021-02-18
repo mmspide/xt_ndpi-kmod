@@ -59,23 +59,16 @@ Compile the kernel and iptable modules inside a CentOS 7: ::
   MODULES_DIR=/lib/modules/3.10.0-514.el7.x86_64 KERNEL_DIR=$MODULES_DIR/build/ make install
   MODULES_DIR=/lib/modules/3.10.0-514.el7.x86_64 KERNEL_DIR=$MODULES_DIR/build/ make modules_install
   
+  ./autogen.sh 
+  make
+  sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
+  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14/nDPI make
+  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14/nDPI make install
+  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14/nDPI make modules_install
+  insmod /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/src/xt_ndpi.ko
+  iptables -m ndpi --help
   
-  export PATH=$INSTALL_DIR/bin:$PATH
-export TARGETMACH=arm-none-linux-gnueabihf
-export BUILDMACH=i686-pc-linux-gnu
-export CROSS=arm-linux-gnueabihf
-export CC=${CROSS}-gcc
-export LD=${CROSS}-ld
-export AS=${CROSS}-as
-export AR=${CROSS}-ar
-
-
-./autogen.sh --host=armv7 --enable-debug-messages
-
-sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
-
-MODULES_DIR=/opt/bpi/SD/BPI-ROOT/lib/modules/4.14.193-atrakpardaz-zoobin KERNEL_DIR=/opt/bpi/BPI-R2-4.14-CI-BUILD-20200807_123125-1f089fa9e NDPI_PATH=$PWD/nDPI-1.7.20151023 make
-
+  
 Links
 -----
 
