@@ -59,8 +59,18 @@ Compile the kernel and iptable modules inside a CentOS 7: ::
   MODULES_DIR=/lib/modules/3.10.0-514.el7.x86_64 KERNEL_DIR=$MODULES_DIR/build/ make install
   MODULES_DIR=/lib/modules/3.10.0-514.el7.x86_64 KERNEL_DIR=$MODULES_DIR/build/ make modules_install
   
+  
+  cd /mnt/sda/bpi-backup/BPI-R2-4.14.217/
+  git clone https://github.com/vel21ripn/nDPI
+  
+  
+  cd /mnt/sda/bpi-backup/BPI-R2-4.14.217/
+  patch 1< /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/kernel-patches/
+  cd nDPI
+  
   ./autogen.sh 
   make
+  cd ndpi-netfilter
   sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
   MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14/nDPI make
   MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14/nDPI make install
