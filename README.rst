@@ -71,13 +71,18 @@ Compile the kernel and iptable modules inside a CentOS 7: ::
   ./autogen.sh 
   make
   cd ndpi-netfilter
-  sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
-  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14/nDPI make
-  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14/nDPI make install
-  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14/nDPI make modules_install
-  insmod /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/src/xt_ndpi.ko
-  iptables -m ndpi --help
   
+  sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
+  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI make
+  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI make install
+  MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI make modules_install  
+  
+  cp /usr/lib/modules/4.14.217-atrakpardaz-zoobin/extra/xt_ndpi.ko  /mnt/root/usr/lib/modules/4.14.217-atrakpardaz-zoobin/extra/
+  cp -r /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/ipt/libxt_ndpi.so /lib/xtables/
+  insmod /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/src/xt_ndpi.ko
+  echo xt_ndpi > /etc/modules-load.d/xt_ndpi.conf
+  
+  iptables -m ndpi --help
   
 Links
 -----
