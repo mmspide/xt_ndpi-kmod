@@ -14,7 +14,7 @@ This procedure has been tested with kernel-3.10.0-514.el7.x86_64 from CentOS 7.3
 
 2. Load the kernel module: ::
 
-     modrpobe xt_ndpi
+     modprobe xt_ndpi
 
 3. Check the module is correctly loaded: ::
 
