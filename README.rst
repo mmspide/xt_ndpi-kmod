@@ -65,7 +65,7 @@ Compile the kernel and iptable modules inside a CentOS 7: ::
   
   
   cd /mnt/sda/bpi-backup/BPI-R2-4.14.217/
-  patch 1< /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/kernel-patches/v4.15.3.diff 
+  patch -p1 < /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI-3.2/ndpi-netfilter/kernel-patch/v4.15.3.diff
   cd nDPI
   
   ./autogen.sh 
