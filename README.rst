@@ -21,12 +21,12 @@ This procedure has been tested with kernel-3.10.0-514.el7.x86_64 from CentOS 7.3
      cat /proc/net/xt_ndpi/proto | head -n5
 
    The output should be like this: ::
-
-     #id     mark ~mask     name   # count #version 1.7.0
-     00         0/000000ff unknown          # 0
-     01         1/000000ff ftp_control      # 0
-     02         2/000000ff mail_pop         # 0
-     03         3/000000ff mail_smtp        # 0
+    
+     #id     mark ~mask     name   # count #version 2.8.0
+     00         0/0000ff00 unknown          # 4 debug=0
+     01       100/0000ff00 ftp_control      # 0 debug=0
+     02       200/0000ff00 pop3             # 0 debug=0
+     03       300/0000ff00 smtp             # 0 debug=0
 
 4. Create a sample rule which blocks facebook: ::
 
@@ -80,36 +80,41 @@ Compile the kernel and iptable modules inside a CentOS 7: ::
   cp /usr/lib/modules/4.14.217-atrakpardaz-zoobin/extra/xt_ndpi.ko  /mnt/root/usr/lib/modules/4.14.217-atrakpardaz-zoobin/kernel/extra/
   cp -r /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/ipt/libxt_ndpi.so /lib/xtables/
   insmod /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/src/xt_ndpi.ko
+
   echo xt_ndpi > /etc/modules-load.d/xt_ndpi.conf
+  echo options xt_ndpi ndpi_enable_flow=1 > /etc/modprobe.d/xt_ndpi.conf
+
   
   iptables -m ndpi --help
 
-#############################
-
-https://github.com/vel21ripn/nDPI/tree/flow_info = 2.8
 
 
-./autogen.sh 
-make
-cd ndpi-netfilter
-
-sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
-MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make 
-MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make modules_install
-MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make install
+ https://github.com/vel21ripn/nDPI/tree/flow_info = 2.8
 
 
+  ./autogen.sh 
+  make
+  cd ndpi-netfilter
 
-cp  /mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info/ndpi-netfilter/ipt/libxt_ndpi. /mnt/root/usr/lib/modules/5.4.94-atrakpardaz-zoobin/
-cp  /mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info/ndpi-netfilter/ipt/libxt_ndpi.so /mnt/root/usr/lib/xtables/
+  sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
+  MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make 
+  MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make modules_install
+  MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make install
+
+
+
+  cp  /mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info/ndpi-netfilter/ipt/libxt_ndpi. /mnt/root/usr/lib/modules/5.4.94-atrakpardaz-zoobin/
+  cp  /mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info/ndpi-netfilter/ipt/libxt_ndpi.so /mnt/root/usr/lib/xtables/
 
   echo xt_ndpi > /etc/modules-load.d/xt_ndpi.conf
+  echo options xt_ndpi ndpi_enable_flow=1 > /etc/modprobe.d/xt_ndpi.conf
   
   iptables -m ndpi --help
   
 Links
 -----
 
-- Github repo: https://github.com/vel21ripn/nDPI/tree/netfilter
+- Github repo:https://github.com/vel21ripn/nDPI/tree/flow_info
+
 - Official site: http://devel.aanet.ru/ndpi
 
