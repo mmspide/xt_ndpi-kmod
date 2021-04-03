@@ -77,9 +77,32 @@ Compile the kernel and iptable modules inside a CentOS 7: ::
   MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI make install
   MODULES_DIR=/lib/modules/4.14.217-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-4.14.217 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI make modules_install  
   
-  cp /usr/lib/modules/4.14.217-atrakpardaz-zoobin/extra/xt_ndpi.ko  /mnt/root/usr/lib/modules/4.14.217-atrakpardaz-zoobin/extra/
+  cp /usr/lib/modules/4.14.217-atrakpardaz-zoobin/extra/xt_ndpi.ko  /mnt/root/usr/lib/modules/4.14.217-atrakpardaz-zoobin/kernel/extra/
   cp -r /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/ipt/libxt_ndpi.so /lib/xtables/
   insmod /mnt/sda/bpi-backup/BPI-R2-4.14.217/nDPI/ndpi-netfilter/src/xt_ndpi.ko
+  echo xt_ndpi > /etc/modules-load.d/xt_ndpi.conf
+  
+  iptables -m ndpi --help
+
+#############################
+
+https://github.com/vel21ripn/nDPI/tree/flow_info = 2.8
+
+
+./autogen.sh 
+make
+cd ndpi-netfilter
+
+sed -e '/^MODULES_DIR/d' -e '/^KERNEL_DIR/d' -i src/Makefile
+MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make 
+MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make modules_install
+MODULES_DIR=/lib/modules/5.4.94-atrakpardaz-zoobin KERNEL_DIR=/mnt/sda/bpi-backup/BPI-R2-5.4.94 NDPI_PATH=/mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info make install
+
+
+
+cp  /mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info/ndpi-netfilter/ipt/libxt_ndpi. /mnt/root/usr/lib/modules/5.4.94-atrakpardaz-zoobin/
+cp  /mnt/sda/bpi-backup/BPI-R2-5.4.94/nDPI-flow_info/ndpi-netfilter/ipt/libxt_ndpi.so /mnt/root/usr/lib/xtables/
+
   echo xt_ndpi > /etc/modules-load.d/xt_ndpi.conf
   
   iptables -m ndpi --help
